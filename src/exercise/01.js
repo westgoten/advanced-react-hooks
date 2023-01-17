@@ -4,14 +4,14 @@
 import * as React from 'react'
 
 function countReducer(previousState, newState) {
-  return newState
+  return previousState + newState
 }
 
 function Counter({initialCount = 0, step = 1}) {
   // 🐨 replace React.useState with React.useReducer.
   const [count, setCount] = React.useReducer(countReducer, initialCount)
 
-  const increment = () => setCount(count + step)
+  const increment = () => setCount(step)
   return <button onClick={increment}>{count}</button>
 }
 
