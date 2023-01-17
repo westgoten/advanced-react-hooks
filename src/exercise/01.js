@@ -3,22 +3,23 @@
 
 import * as React from 'react'
 
-function countReducer(previousState, newState) {
-  if (typeof newState === 'function') {
-    return newState(previousState)
+function countReducer(previousState, action) {
+  switch (action.type) {
+    case 'INCREMENT':
+      return {count: previousState.count + action.step}
+    default:
+      throw new Error('countReducer: Invalid action type')
   }
-  return {...previousState, ...newState}
 }
 
 function Counter({initialCount = 0, step = 1}) {
   // 🐨 replace React.useState with React.useReducer.
-  const [state, setState] = React.useReducer(countReducer, {
+  const [state, dispatch] = React.useReducer(countReducer, {
     count: initialCount,
   })
   const {count} = state
 
-  const increment = () =>
-    setState(previousState => ({count: previousState.count + step}))
+  const increment = () => dispatch({type: 'INCREMENT', step})
   return <button onClick={increment}>{count}</button>
 }
 
