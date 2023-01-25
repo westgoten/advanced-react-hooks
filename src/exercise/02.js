@@ -10,7 +10,7 @@ import {
   PokemonErrorBoundary,
 } from '../pokemon'
 
-function useAsync(callback, dependencies) {
+function useAsync(callback) {
   const [state, dispatch] = React.useReducer(asyncReducer, {
     status: 'idle',
     data: null,
@@ -30,7 +30,7 @@ function useAsync(callback, dependencies) {
         },
       )
     }
-  }, dependencies)
+  }, [callback])
 
   return state
 }
@@ -53,14 +53,8 @@ function asyncReducer(state, action) {
 }
 
 function PokemonInfo({pokemonName}) {
-  const state = useAsync(() => {
-    if (!pokemonName) {
-      return
-    }
-    return fetchPokemon(pokemonName)
-  }, [pokemonName])
-
-  const {data, status, error} = state
+  const getPokemonCallback = React.useCallback(getPokemon, [pokemonName])
+  const {data, status, error} = useAsync(getPokemonCallback)
 
   switch (status) {
     case 'idle':
@@ -73,6 +67,13 @@ function PokemonInfo({pokemonName}) {
       return <PokemonDataView pokemon={data} />
     default:
       throw new Error('This should be impossible')
+  }
+
+  function getPokemon() {
+    if (!pokemonName) {
+      return
+    }
+    return fetchPokemon(pokemonName)
   }
 }
 
