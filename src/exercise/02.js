@@ -17,8 +17,7 @@ function useAsync() {
     error: null,
   })
 
-  function run(callback) {
-    const promise = callback()
+  function run(promise) {
     if (promise) {
       dispatch({type: 'pending'})
       promise.then(
@@ -26,7 +25,9 @@ function useAsync() {
           dispatch({type: 'resolved', data})
         },
         error => {
-          dispatch({type: 'rejected', error})
+          if (error.name !== 'AbortError') {
+            dispatch({type: 'rejected', error})
+          }
         },
       )
     }
@@ -58,7 +59,13 @@ function PokemonInfo({pokemonName}) {
   const {data, status, error, run} = useAsync()
 
   React.useEffect(() => {
-    run(() => getPokemon(pokemonName))
+    const result = getPokemon(pokemonName)
+    if (result) {
+      const {promise, controller} = result
+      run(promise)
+
+      return () => controller.abort()
+    }
   }, [pokemonName, run])
 
   switch (status) {
