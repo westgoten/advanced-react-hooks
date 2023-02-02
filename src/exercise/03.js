@@ -27,7 +27,7 @@ function CountDisplay() {
 
 function Counter() {
   const [count, setCount] = useCount()
-  const increment = () => setCount(previousCount => previousCount + 1)
+  const increment = () => setCount(count + 1)
 
   return <button onClick={increment}>Increment count</button>
 }
