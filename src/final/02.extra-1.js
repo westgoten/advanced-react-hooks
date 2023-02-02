@@ -58,7 +58,7 @@ function PokemonInfo({pokemonName}) {
     if (!pokemonName) {
       return
     }
-    return fetchPokemon(pokemonName)
+    return fetchPokemon(pokemonName).promise
   }, [pokemonName])
 
   const state = useAsync(asyncCallback, {

@@ -72,7 +72,7 @@ function PokemonInfo({pokemonName}) {
     if (!pokemonName) {
       return
     }
-    run(fetchPokemon(pokemonName))
+    run(fetchPokemon(pokemonName).promise)
   }, [pokemonName, run])
 
   switch (status) {

@@ -19,10 +19,7 @@ import {useAsync} from '../utils'
 
 // 🐨 create a PokemonCacheProvider function
 // 🐨 useReducer with pokemonCacheReducer in your PokemonCacheProvider
-// 💰 you can grab the one that's in PokemonInfo
 // 🐨 return your context provider with the value assigned to what you get back from useReducer
-// 💰 value={[cache, dispatch]}
-// 💰 make sure you forward the props.children!
 
 function pokemonCacheReducer(state, action) {
   switch (action.type) {
@@ -49,7 +46,7 @@ function PokemonInfo({pokemonName}) {
       setData(cache[pokemonName])
     } else {
       run(
-        fetchPokemon(pokemonName).then(pokemonData => {
+        fetchPokemon(pokemonName).promise.then(pokemonData => {
           dispatch({type: 'ADD_POKEMON', pokemonName, pokemonData})
           return pokemonData
         }),

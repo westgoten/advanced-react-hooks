@@ -62,7 +62,7 @@ function PokemonInfo({pokemonName}) {
       if (!pokemonName) {
         return
       }
-      return fetchPokemon(pokemonName)
+      return fetchPokemon(pokemonName).promise
     },
     {status: pokemonName ? 'pending' : 'idle'},
     [pokemonName],
