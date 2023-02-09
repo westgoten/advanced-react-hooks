@@ -3,9 +3,13 @@
 
 import * as React from 'react'
 
+function formatMediaDebugValue({query, state}) {
+  return `query: ${query}, state: ${state}`
+}
+
 function useMedia(query, initialState = false) {
   const [state, setState] = React.useState(initialState)
-  React.useDebugValue(query)
+  React.useDebugValue({query, state}, formatMediaDebugValue)
 
   React.useEffect(() => {
     const mql = window.matchMedia(query)
